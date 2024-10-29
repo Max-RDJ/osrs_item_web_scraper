@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSRS Item Scraper</title>
+  <link rel="stylesheet" href="styles1.4.css">
+</head>
+
+<body>
+
+<div id="page-title">
+  <h1>OSRS Item Price Scraper</h1>
+</div>
+
+<div id="columns-container">
+
+<div class="column">
+<fieldset id="search-box">
+    <legend id="search-title">Item Search</legend>
+    <input type="text" id="itemDescription" placeholder="e.g. mithril platebody">
+    <button onclick="searchItem()" id="search-btn">Search</button>
+    <div id="results-error">No results found.</div>
+</fieldset>
+
+  <div class="item-container" draggable="true">
+    <h2 id="resultName" class="item-description"></h2>
+    <p id="resultPrice"></p>
+  </div>
+</div>
+
+<div class="column">
+  <div id="profit-title-container">
+    <h2 id="profit-title">Profit calculator</h2>
+  </div>
+  <div id="calc-items-container">
+    <div class="drop-zone"><span class="drop-text" id="first-calc-item">Drop here</span></div>
+    <div class="drop-zone"><span class="drop-text" id="second-calc-item">Drop here</span></div>
+    <div class="drop-zone"><span class="drop-text" id="third-calc-item">Drop here</span></div>
+    <div class="drop-zone"><span class="drop-text" id="fourth-calc-item">Drop here</span></div>
+  </div>
+</div>
+
+</div>
+
+  <script>
+    var input = document.getElementById("itemDescription");
+
+    input.addEventListener("keypress", function(event) {
+      
+      if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("search-btn").click();
+      }
+    });
+
+    function searchItem() {
+      const itemDescription = document.getElementById('itemDescription').value;
+      fetch(`/search?itemDescription=${encodeURIComponent(itemDescription)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            // document.getElementById('resultName').innerText = data.error;
+            // document.getElementById('resultPrice').innerText = "";
+            document.getElementById("results-error").style.display = "block";
+          } else {
+            document.getElementById('resultName').innerText = data.item_name;
+            document.getElementById('resultPrice').innerText = `Price: ${data.price}`;
+          }
+        });
+    }
+
+
+    const itemContainer = document.querySelector(".item-container");
+    const dropZone = document.querySelector(".drop-zone")
+    const dropText = document.querySelector(".drop-text")
+
+    itemContainer.addEventListener("dragstart", function(event) {
+      console.log(event)
+    })
+
+    dropZone.addEventListener("dragover", function(event) {
+      event.preventDefault()
+    })
+
+    dropZone.addEventListener("drop", function(event) {
+      dropZone.prepend(itemContainer)
+      dropText.style.display = "none";
+    })
+
+
+  </script>
+</body>
+</html>

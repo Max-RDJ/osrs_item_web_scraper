@@ -1,0 +1,77 @@
+:root {
+    --dark: #1b1b1c;
+    --grey: #6b6b6d;
+    --light: #cbcbd6;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--light);
+    justify-content: center;
+}
+
+button {
+    padding: 5px;
+    font-size: 1.5em;
+}
+
+input {
+    padding: 7.5px;
+    font-size: 1.5em;
+}
+
+#results-error {
+    display: none;
+}
+
+#columns-container {
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+    padding: 25px;
+}
+
+#profit-title {
+    margin-inline: auto;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+#profit-title-container {
+    display: flex;
+    justify-content: center;
+}
+
+.drop-zone {
+    margin-bottom: 30px;
+    border: dashed var(--grey) 3px;
+    min-height: 50px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.drop-text {
+    display: block;
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+
+    font-size: 1.3em;
+    color: var(--grey)
+}
+
+#page-title {
+    display: flex;
+    justify-content: center;
+}
+
+#search-title {
+    font-size: 1.2em;
+}
+
+#search-box {
+    padding: 15px;
+}
