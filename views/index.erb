@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OSRS Item Scraper</title>
-  <link rel="stylesheet" href="styles1.4.css">
+  <link rel="stylesheet" href="styles1.6.css">
 </head>
 
 <body>
@@ -16,18 +16,25 @@
 <div id="columns-container">
 
 <div class="column">
-<fieldset id="search-box">
+  <fieldset id="search-box">
     <legend id="search-title">Item Search</legend>
     <input type="text" id="itemDescription" placeholder="e.g. mithril platebody">
     <button onclick="searchItem()" id="search-btn">Search</button>
     <div id="results-error">No results found.</div>
-</fieldset>
+  </fieldset>
 
-  <div class="item-container" draggable="true">
-    <h2 id="resultName" class="item-description"></h2>
-    <p id="resultPrice"></p>
+  <div class="card-container">
+
+    <%# <div class="card" draggable="true">
+      <h2 id="resultName" class="item-description"></h2>
+      <p id="resultPrice"></p>
+    </div> %>
+
   </div>
+
+
 </div>
+
 
 <div class="column">
   <div id="profit-title-container">
@@ -64,31 +71,69 @@
             // document.getElementById('resultPrice').innerText = "";
             document.getElementById("results-error").style.display = "block";
           } else {
-            document.getElementById('resultName').innerText = data.item_name;
-            document.getElementById('resultPrice').innerText = `Price: ${data.price}`;
-          }
-        });
-    }
+            document.getElementById("results-error").style.display = "none";
+
+            const cardContainer = document.querySelector(".card-container");
+        
+            const newCard = document.createElement("div");
+
+            newCard.classList.add("card");
+            newCard.setAttribute("draggable", "true");
+            newCard.id = `card-${Math.random().toString(36).substr(2, 9)}`;
+
+            const itemName = document.createElement("h2");
+            itemName.classList.add("item-description");
+            itemName.textContent = data.item_name;
+            newCard.appendChild(itemName);
+
+            const itemPrice = document.createElement("p");
+            itemPrice.textContent = `Price: ${data.price}`;
+            newCard.appendChild(itemPrice);
+
+            cardContainer.appendChild(newCard);
+
+            newCard.addEventListener("dragstart", handleDragStart);
+
+            document.getElementById("itemDescription").value = "";
+         }
+    });
+}
 
 
-    const itemContainer = document.querySelector(".item-container");
-    const dropZone = document.querySelector(".drop-zone")
-    const dropText = document.querySelector(".drop-text")
-
-    itemContainer.addEventListener("dragstart", function(event) {
-      console.log(event)
-    })
-
-    dropZone.addEventListener("dragover", function(event) {
-      event.preventDefault()
-    })
-
-    dropZone.addEventListener("drop", function(event) {
-      dropZone.prepend(itemContainer)
-      dropText.style.display = "none";
-    })
 
 
-  </script>
+
+    // const card = document.querySelector(".card");
+    // const dropZone = document.querySelector(".drop-zone")
+    // const dropText = document.querySelector(".drop-text")
+
+function handleDragStart(event) {
+  event.dataTransfer.setData("text/plain", event.target.id); // Store card ID
+  event.dataTransfer.effectAllowed = "move";
+}
+
+function handleDragOver(event) {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = "move";
+}
+
+function handleDrop(event) {
+  event.preventDefault();
+  const cardId = event.dataTransfer.getData("text/plain");
+  const cardElement = document.getElementById(cardId);
+
+  if (cardElement && event.target.classList.contains("drop-zone")) {
+    event.target.innerHTML = ''; 
+    event.target.appendChild(cardElement);
+  }
+}
+
+
+document.querySelectorAll(".drop-zone").forEach(dropZone => {
+  dropZone.addEventListener("dragover", handleDragOver);
+  dropZone.addEventListener("drop", handleDrop);
+});
+</script>
+
 </body>
 </html>
