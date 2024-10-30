@@ -1,0 +1,2 @@
+- Download a table of item names and their IDs. Implement this to avoid hard-coding items.
+

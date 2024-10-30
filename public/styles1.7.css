@@ -34,11 +34,6 @@ input {
     padding: 25px;
 }
 
-.card-container {
-    border: solid white 1px;
-    min-height: 500px;
-}
-
 #profit-title {
     margin-inline: auto;
     margin-top: 0;
@@ -56,12 +51,7 @@ input {
     min-height: 50px;
     padding: 15px;
     border-radius: 10px;
-    transition: background-color 0.3s ease;
 }
-
-.drop-zone.dragover {
-    background-color: rgba(128, 128, 128, 0.2);
-  }
 
 .drop-text {
     display: block;
