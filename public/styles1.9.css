@@ -11,9 +11,26 @@ body {
     justify-content: center;
 }
 
+#search-title {
+    font-size: 1.2em;
+}
+
+#search-box {
+    padding: 15px;
+}
+
 button {
     padding: 5px;
     font-size: 1.5em;
+    background-color: #3b3b3d;
+    color: var(--light);
+    border-radius: 8px;
+    border: solid var(--grey) 2px;
+}
+
+button:active {
+    color: var(--dark);
+    background-color: var(--light);
 }
 
 input {
@@ -32,6 +49,10 @@ input {
 .column {
     flex: 50%;
     padding: 25px;
+}
+
+.item-container {
+    border: solid var(--light) 1px;
 }
 
 #profit-title {
@@ -66,12 +87,4 @@ input {
 #page-title {
     display: flex;
     justify-content: center;
-}
-
-#search-title {
-    font-size: 1.2em;
-}
-
-#search-box {
-    padding: 15px;
 }

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OSRS Item Scraper</title>
-  <link rel="stylesheet" href="styles1.7.css">
+  <link rel="stylesheet" href="styles1.9.css">
 </head>
 
 <body>
@@ -24,9 +24,20 @@
 </fieldset>
 
   <div class="item-container" draggable="true">
-    <h2 id="resultName" class="item-description"></h2>
+    <h2 class="resultName"></h2>
     <p id="resultPrice"></p>
   </div>
+
+  <div class="item-container" draggable="true">
+    <h2 class="resultName"></h2>
+    <p id="resultPrice"></p>
+  </div>
+
+  <div class="item-container" draggable="true">
+    <h2 class="resultName"></h2>
+    <p id="resultPrice"></p>
+  </div>
+  
 </div>
 
 <div class="column">
@@ -34,16 +45,24 @@
     <h2 id="profit-title">Profit calculator</h2>
   </div>
   <div id="calc-items-container">
-    <div class="drop-zone"><span class="drop-text" id="first-calc-item">Drop here</span></div>
-    <div class="drop-zone"><span class="drop-text" id="second-calc-item">Drop here</span></div>
-    <div class="drop-zone"><span class="drop-text" id="third-calc-item">Drop here</span></div>
-    <div class="drop-zone"><span class="drop-text" id="fourth-calc-item">Drop here</span></div>
+    <div id="items-purchased">Items to purchase
+      <div class="drop-zone"><span class="drop-text" id="first-calc-item">Drop here</span></div>
+      <div class="drop-zone"><span class="drop-text" id="second-calc-item">Drop here</span></div>
+    </div>
+    <div id="items-sold">Items to sell
+      <div class="drop-zone"><span class="drop-text" id="third-calc-item">Drop here</span></div>
+      <div class="drop-zone"><span class="drop-text" id="fourth-calc-item">Drop here</span></div>
+    </div>
   </div>
 </div>
 
 </div>
 
   <script>
+    const itemContainer = document.querySelector(".item-container");
+    const dropZones = document.querySelector(".drop-zone");
+    const dropText = document.querySelector(".drop-text");
+    var resultName = document.querySelectorAll(".resultName");
     var input = document.getElementById("itemDescription");
 
     input.addEventListener("keypress", function(event) {
@@ -60,31 +79,37 @@
         .then(response => response.json())
         .then(data => {
           if (data.error) {
-            // document.getElementById('resultName').innerText = data.error;
-            // document.getElementById('resultPrice').innerText = "";
             document.getElementById("results-error").style.display = "block";
           } else {
-            document.getElementById('resultName').innerText = data.item_name;
+            /* resultName.forEach(resultName => {
+                if (resultName == "") {
+                  document.querySelector('.resultName').innerText = data.item_name;
+                  document.getElementById('resultPrice').innerText = `Price: ${data.price}`;
+                  return;
+                }
+                else if (resultName !== "") {
+                  continue;
+                }
+              }
+            })
+            */
+            document.querySelector('.resultName').innerText = data.item_name;
             document.getElementById('resultPrice').innerText = `Price: ${data.price}`;
           }
         });
     }
 
 
-    const itemContainer = document.querySelector(".item-container");
-    const dropZone = document.querySelector(".drop-zone")
-    const dropText = document.querySelector(".drop-text")
-
     itemContainer.addEventListener("dragstart", function(event) {
       console.log(event)
     })
 
-    dropZone.addEventListener("dragover", function(event) {
+    dropZones.addEventListener("dragover", function(event) {
       event.preventDefault()
     })
 
-    dropZone.addEventListener("drop", function(event) {
-      dropZone.prepend(itemContainer)
+    dropZones.addEventListener("drop", function(event) {
+      dropZones.prepend(itemContainer)
       dropText.style.display = "none";
     })
 
