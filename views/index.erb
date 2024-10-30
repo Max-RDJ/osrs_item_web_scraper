@@ -23,19 +23,19 @@
     <div id="results-error">No results found.</div>
 </fieldset>
 
-  <div class="item-container" draggable="true">
+  <div class="item-container" draggable="true" id="item-1">
     <h2 class="resultName"></h2>
-    <p id="resultPrice"></p>
+    <p class="resultPrice"></p>
   </div>
 
-  <div class="item-container" draggable="true">
+  <div class="item-container" draggable="true" id="item-2">
     <h2 class="resultName"></h2>
-    <p id="resultPrice"></p>
+    <p class="resultPrice"></p>
   </div>
 
-  <div class="item-container" draggable="true">
+  <div class="item-container" draggable="true" id="item-3">
     <h2 class="resultName"></h2>
-    <p id="resultPrice"></p>
+    <p class="resultPrice"></p>
   </div>
   
 </div>
@@ -44,26 +44,33 @@
   <div id="profit-title-container">
     <h2 id="profit-title">Profit calculator</h2>
   </div>
+
   <div id="calc-items-container">
+
     <div id="items-purchased">Items to purchase
-      <div class="drop-zone"><span class="drop-text" id="first-calc-item">Drop here</span></div>
-      <div class="drop-zone"><span class="drop-text" id="second-calc-item">Drop here</span></div>
+      <div class="drop-zone"><span class="drop-text" id="first-calc-item">Drag & drop here</span></div>
+      <div class="drop-zone"><span class="drop-text" id="second-calc-item">Drag & drop here</span></div>
     </div>
+
     <div id="items-sold">Items to sell
-      <div class="drop-zone"><span class="drop-text" id="third-calc-item">Drop here</span></div>
-      <div class="drop-zone"><span class="drop-text" id="fourth-calc-item">Drop here</span></div>
+      <div class="drop-zone"><span class="drop-text" id="third-calc-item">Drag & drop here</span></div>
+      <div class="drop-zone"><span class="drop-text" id="fourth-calc-item">Drag & drop here</span></div>
+
     </div>
+
   </div>
 </div>
 
 </div>
 
   <script>
-    const itemContainer = document.querySelector(".item-container");
-    const dropZones = document.querySelector(".drop-zone");
-    const dropText = document.querySelector(".drop-text");
-    var resultName = document.querySelectorAll(".resultName");
-    var input = document.getElementById("itemDescription");
+    const itemContainers = document.querySelectorAll(".item-container");
+    const dropZones = document.querySelectorAll(".drop-zone");
+    const dropText = document.querySelectorAll(".drop-text");
+    const resultNames = document.querySelectorAll(".resultName");
+    const resultPrices = document.querySelectorAll(".resultPrice");
+    const resultsError = document.getElementById("results-error");
+    const input = document.getElementById("itemDescription");
 
     input.addEventListener("keypress", function(event) {
       
@@ -74,44 +81,69 @@
     });
 
     function searchItem() {
-      const itemDescription = document.getElementById('itemDescription').value;
-      fetch(`/search?itemDescription=${encodeURIComponent(itemDescription)}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.error) {
-            document.getElementById("results-error").style.display = "block";
-          } else {
-            /* resultName.forEach(resultName => {
-                if (resultName == "") {
-                  document.querySelector('.resultName').innerText = data.item_name;
-                  document.getElementById('resultPrice').innerText = `Price: ${data.price}`;
-                  return;
-                }
-                else if (resultName !== "") {
-                  continue;
-                }
-              }
-            })
-            */
-            document.querySelector('.resultName').innerText = data.item_name;
-            document.getElementById('resultPrice').innerText = `Price: ${data.price}`;
-          }
-        });
+  const itemDescription = document.getElementById("itemDescription").value;
+
+  fetch(`/search?itemDescription=${encodeURIComponent(itemDescription)}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log("Full fetched data:", data);  // Log the full response for verification
+
+      // Check if `data` contains the expected properties directly
+      if (data.error) {
+        document.getElementById("results-error").style.display = "block";
+      } else if (data.item_name && data.price) {  // Verify `item_name` and `price` are present
+        document.getElementById("results-error").style.display = "none";
+
+        // Update the first `.resultName` and `#resultPrice` with the fetched data
+        document.querySelector('.resultName').innerText = data.item_name;
+        document.querySelector('.resultPrice').innerText = `Price: ${data.price}`;
+      } else {
+        console.error("Unexpected data format:", data);  // Log unexpected format
+        document.getElementById("results-error").style.display = "block";
+      }
+    })
+    .catch(error => {
+      console.error("Fetch error:", error);  // Log any fetch errors
+      document.getElementById("results-error").style.display = "block";
+    });
+}
+
+
+
+            
+            
+            // document.querySelector('.resultName').innerText = data.item_name;
+            // document.getElementById('resultPrice').innerText = `Price: ${data.price}`;
+
+  itemContainers.forEach(container => {
+        container.addEventListener("dragstart", function(event) {
+        event.dataTransfer.setData("text/plain", event.target.id);
+      });
+    });
+    // itemContainer.addEventListener("dragstart", function(event) {
+    //   console.log(event)
+    // })
+
+    dropZones.forEach(zone => {
+      zone.addEventListener("dragover", function(event) {
+      event.preventDefault();
+    });
+  
+    zone.addEventListener("drop", function(event) {
+      event.preventDefault();
+      const draggedItemId = event.dataTransfer.getData("text");
+      const draggedItem = document.getElementById(draggedItemId);
+
+      if (draggedItem) {
+        zone.appendChild(draggedItem);
+
+      const dropText = zone.querySelector(".drop-text");
+      if (dropText) {
+        dropText.style.display = "none";
+      }
     }
-
-
-    itemContainer.addEventListener("dragstart", function(event) {
-      console.log(event)
-    })
-
-    dropZones.addEventListener("dragover", function(event) {
-      event.preventDefault()
-    })
-
-    dropZones.addEventListener("drop", function(event) {
-      dropZones.prepend(itemContainer)
-      dropText.style.display = "none";
-    })
+  });
+});
 
 
   </script>

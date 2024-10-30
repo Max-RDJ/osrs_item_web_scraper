@@ -1,2 +1,3 @@
 - Download a table of item names and their IDs. Implement this to avoid hard-coding items.
 
+- Make it possible to switch items in and out with drag and drop
