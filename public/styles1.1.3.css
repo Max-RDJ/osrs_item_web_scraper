@@ -11,6 +11,11 @@ body {
     justify-content: center;
 }
 
+#page-title {
+    display: flex;
+    justify-content: center;
+}
+
 #search-title {
     font-size: 1.2em;
 }
@@ -44,18 +49,34 @@ input {
 
 #columns-container {
     display: flex;
+    justify-content: center;
+    height: 100%;
 }
 
 .column {
-    flex: 50%;
+    flex: 1;
     padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid white 1px;
+}
+
+.sub-headings {
+    margin-inline: auto;
+    margin-bottom: 27.5px;
 }
 
 .item-container {
-    border: solid var(--light) 1px;
     border-radius: 5px;
-    margin: 20px;
     min-height: 100px;
+    padding-inline: 15px;
+    padding: 10px;
+    display: flex;
+}
+
+.item-container img {
+    display: none;
 }
 
 #profit-title {
@@ -69,24 +90,41 @@ input {
     justify-content: center;
 }
 
+#calc-items-container {
+    width: 100%;
+}
+
+#items-to-purchase {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#items-to-sell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.calc-drop {
+    width: 75%;
+    min-height: 100px;
+    margin: auto;
+}
+
 .drop-zone {
     margin-bottom: 30px;
     border: dashed var(--grey) 3px;
-    min-height: 50px;
-    padding: 15px;
     border-radius: 10px;
 }
 
 .drop-text {
     display: block;
     height: 100%;
-    line-height: 50px;
     text-align: center;
+    padding: 35px 10px 35px 10px;
     font-size: 1.3em;
     color: var(--grey)
 }
 
-#page-title {
-    display: flex;
-    justify-content: center;
-}
+

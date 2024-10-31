@@ -7,13 +7,21 @@ ITEMS = [
   {
     itemDescription: "Mithril platebody",
     itemName: "mithril+platebody",
-    itemId: 1121
+    itemId: 1121,
+    image: "https://secure.runescape.com/m=itemdb_oldschool/1730287781460_obj_big.gif?id=1121"
   },
   {
     itemDescription: "Mithril bar",
     itemName: "mithril+bar",
-    itemId: 2359
-  }
+    itemId: 2359,
+    image: "https://secure.runescape.com/m=itemdb_oldschool/1730287781460_obj_big.gif?id=2359"
+  },
+  {
+    itemDescription: "Coal",
+    itemName: "coal",
+    itemId: 453,
+    image: "https://secure.runescape.com/m=itemdb_oldschool/1730287781460_obj_big.gif?id=453"
+  },
 ]
 
 get "/" do
@@ -26,6 +34,7 @@ get "/search" do
   item_found = ITEMS.find { |item| item[:itemDescription].downcase == user_search }
 
   if item_found
+    puts "Item found details: #{item_found}"
     url = "https://secure.runescape.com/m=itemdb_oldschool/#{item_found[:itemName]}/viewitem?obj=#{item_found[:itemId]}"
     html = URI.open(url)
     doc = Nokogiri::HTML(html)
@@ -34,7 +43,7 @@ get "/search" do
     price = doc.css("h3 span").text
 
     content_type :json
-    { item_name: item_name, price: price, url: url }.to_json
+    { item_name: item_name, price: price, url: url, image: item_found[:image] }.to_json
   else
     content_type :json
     { error: "No results found." }.to_json
