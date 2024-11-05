@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OSRS Item Scraper</title>
-  <link rel="stylesheet" href="styles1.1.3.css">
+  <title>OSRS Item Fetcher</title>
+  <link rel="stylesheet" href="styles1.1.5.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
 
 <div id="page-title">
-  <h1>OSRS Item Price Scraper</h1>
+  <h1>OSRS Item Price Fetcher</h1>
 </div>
 
 <div id="columns-container">
 
-<div class="column">
+<div class="column drop-zone" id="column-left">
 <fieldset id="search-box">
     <legend id="search-title">Item Search</legend>
     <input type="text" id="itemDescription" placeholder="e.g. mithril platebody">
@@ -25,7 +26,7 @@
 
   <div class="item-container" draggable="true" id="item-1">
     <div>
-      <img src="" alt="Item image" id="item-image-1">
+      <img src="" alt="Item image" id="item-image-1" draggable="false">
     </div>
     <div>
       <h2 class="resultName"></h2>
@@ -35,7 +36,7 @@
 
   <div class="item-container" draggable="true" id="item-2">
     <div>
-      <img src="" alt="Item image" id="item-image-2">
+      <img src="" alt="Item image" id="item-image-2" draggable="false">
     </div>
     <div>
       <h2 class="resultName"></h2>
@@ -43,7 +44,7 @@
     </div>
   </div>
 
-  <div class="item-container" draggable="true" id="item-3">
+  <div class="item-container" draggable="true" id="item-3"  draggable="false">
     <div>
       <img src="" alt="Item image" id="item-image-3">
     </div>
@@ -60,18 +61,24 @@
     <h2 id="profit-title">Profit calculator</h2>
   </div>
 
+  <div id="profit-calculator">
+    <h3>Profit:</h3>
+    <p id="profit-figure"></p>
+    <button onclick="calculateProfit()">Calculate!</button>
+  </div>
+
   <div id="calc-items-container">
 
     <div id="items-to-purchase">
       <h3 class="sub-headings">Items to purchase</h3>
-      <div class="drop-zone calc-drop"><span class="drop-text" id="first-calc-item">Drag & drop here</span></div>
-      <div class="drop-zone calc-drop"><span class="drop-text" id="second-calc-item">Drag & drop here</span></div>
+      <div class="drop-zone calc-drop" id="first-purchase-item"><span class="drop-text">Drag & drop here</span></div>
+      <div class="drop-zone calc-drop" id="second-purchase-item"><span class="drop-text">Drag & drop here</span></div>
     </div>
 
     <div id="items-to-sell">
       <h3 class="sub-headings">Items to sell</h3>
-      <div class="drop-zone calc-drop"><span class="drop-text" id="third-calc-item">Drag & drop here</span></div>
-      <div class="drop-zone calc-drop"><span class="drop-text" id="fourth-calc-item">Drag & drop here</span></div>
+      <div class="drop-zone calc-drop" id="first-sell-item"><span class="drop-text">Drag & drop here</span></div>
+      <div class="drop-zone calc-drop" id="second-sell-item"><span class="drop-text">Drag & drop here</span></div>
 
     </div>
 
@@ -155,6 +162,42 @@ itemContainers.forEach(container => {
     }
   });
 });
+
+
+
+
+function calculateProfit() {
+  const profitFigure = document.getElementById("profit-figure");
+  const firstPurchaseItem = document.querySelector("#first-purchase-item");
+  const firstPurchasePriceElement = firstPurchaseItem.querySelector(".resultPrice");
+  const firstPurchaseFigure = firstPurchasePriceElement 
+    ? parseInt(firstPurchasePriceElement.innerText.replace("Price: ", "")) 
+    : 0;
+
+  // const secondPurchaseItem = document.querySelector("#second-purchase-item");
+
+  const firstSellItem = document.querySelector("#first-sell-item");
+  const firstSellPriceElement = firstSellItem.querySelector(".resultPrice");
+  const firstSellFigure = firstSellPriceElement 
+    ? parseInt(firstSellPriceElement.innerText.replace("Price: ", "")) 
+    : 0;
+  // const secondSellItem = document.querySelector("#second-sell-item");
+
+
+  console.log(`First purchase: ${firstPurchaseFigure}`);
+  console.log(`First sale: ${firstSellFigure}`);
+
+  profitFigure = firstSellFigure - firstPurchaseFigure;
+
+  console.log(profitFigure)
+}
+
+
+// profitFigure.innerText = profit;
+// let profit = 0
+
+// profit = firstSellItem + secondSellItem
+
 </script>
 </body>
 </html>
